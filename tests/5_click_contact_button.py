@@ -12,9 +12,9 @@ class ProfileTestCase(unittest.TestCase):
         cls.browser.implicitly_wait(10)  # Menunggu maksimal 10 detik untuk elemen muncul
         cls.connection = pymysql.connect(
             host='localhost',
-            user='your_username',
-            password='your_password',
-            database='your_database'
+            user='',
+            password='',
+            database='badcrud'
         )
 
     def test_1_login_page(self):
@@ -25,7 +25,7 @@ class ProfileTestCase(unittest.TestCase):
 
     def test_2_login_with_database_credentials(self):
         # Path ke file database
-        database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'database', 'your_database_file.sql'))
+        database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'db', 'badcrud.sql'))
 
         # Ambil username dan password dari database
         with self.connection.cursor() as cursor:
