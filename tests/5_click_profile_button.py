@@ -1,35 +1,43 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import unittest
-import pymysql
+import unittest, sys
+import sqlite3
 import os
 
 class ProfileTestCase(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
-        cls.browser = webdriver.Firefox()
-        cls.browser.implicitly_wait(10)  # Menunggu maksimal 10 detik untuk elemen muncul
-        cls.connection = pymysql.connect(
-            host='localhost',
-            user='',
-            password='',
-            database='badcrud'
-        )
+    def setUp(self):
+        options = webdriver.FirefoxOptions()
+        options.add_argument('--ignore-ssl-errors=yes')
+        options.add_argument('--ignore-certificate-errors')
+        server = 'http://localhost:4444'
+
+        self.browser = webdriver.Remote(command_executor=server, options=options)
+        self.browser.implicitly_wait(10)  # Menunggu maksimal 10 detik untuk elemen muncul
+        # Path ke file database
+        database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'db', 'badcrud.db'))
+
+        # Buat koneksi ke file database
+        self.connection = sqlite3.connect(database_path)
 
     def test_1_login_page(self):
-        self.browser.get('http://localhost/BadCRUD/login.php')
+        if len(sys.argv) > 1:
+            url = sys.argv[1]
+        else:
+            url = "http://localhost"
+
+        self.browser.get(url)
+        self.browser.save_screenshot('screenshot.png')
         expected_result = "Login"
         actual_result = self.browser.title
         self.assertIn(expected_result, actual_result)
 
     def test_2_login_with_database_credentials(self):
-        # Path ke file database
-        database_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'db', 'badcrud.sql'))
-
+        
         # Ambil username dan password dari database
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT username, password FROM users WHERE id = 1")  # Ubah sesuai dengan skema tabel Anda
+            cursor.execute("SELECT username, password FROM users WHERE id_user = 1")
             result = cursor.fetchone()
             username, password = result
 
