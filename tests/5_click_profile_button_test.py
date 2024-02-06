@@ -28,8 +28,8 @@ class ProfileTestCase(unittest.TestCase):
     def test_2_login_with_database_credentials(self):
         
         # Masukkan username dan password
-        self.browser.find_element(By.XPATH, "//*[@id='inputUsername']").send_keys(admin)
-        self.browser.find_element(By.XPATH, "//*[@id='inputPassword']").send_keys(nimda666!)
+        self.browser.find_element(By.XPATH, "//*[@id='inputUsername']").send_keys("admin")
+        self.browser.find_element(By.XPATH, "//*[@id='inputPassword']").send_keys("nimda666!")
         self.browser.find_element(By.XPATH, "/html/body/form/button").click()
 
         # Verifikasi bahwa login berhasil
