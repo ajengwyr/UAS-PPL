@@ -45,9 +45,6 @@ jobs:
       - name: Install Selenium client
         run: pip install -U selenium
         
-      - name: Install sqlite3
-        run: pip install sqlite3
-        
       - name: Run test 1
         run: python tests/5_click_contact_button.py ${{ env.URL }}
         continue-on-error: true
