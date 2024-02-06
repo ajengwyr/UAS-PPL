@@ -44,7 +44,10 @@ jobs:
 
       - name: Install Selenium client
         run: pip install -U selenium
-
+        
+      - name: Install pymysql
+        run: pip install pymysql
+        
       - name: Run test 1
         run: python tests/5_click_contact_button.py ${{ env.URL }}
         continue-on-error: true
